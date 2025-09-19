@@ -14,17 +14,16 @@ int main () {
     //Validação para as dimnensões da folha serem maiores que o tamanho do bolso. 
     //Enquanto essa condição for verdadeira, o programa continuará validando os valores
     while (comprimento_folha >= comprimento_bolso || largura_folha >= comprimento_bolso){
+        //Verificação para saber qual lado da folha é maior
+        //O maior lado será dobrado
         if (comprimento_folha >= comprimento_bolso){
             comprimento_folha = comprimento_folha / 2;
-
-            //Incrementa o contador a cada dobra de comprimento
-            contador++;
         } else {
             largura_folha = largura_folha / 2;
-
-            //Incrementa o contador a cada dobra de largura
-            contador++;
         } 
+
+        //Contador que contabiliza o número de dobras necessárias para cada dobra
+        contador++;
     }
 
     printf("Número de dobras necessárias: %d\n", contador);
