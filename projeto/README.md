@@ -1,6 +1,6 @@
 # Projeto ITP 2025-2
 
-Este é o projeto principal do curso, desenvolvido em C com interface gráfica GTK.
+Este é o projeto principal do curso, desenvolvido em C com interface gráfica GTK que no momento ainda está em desenvolvimento.
 
 ## Estrutura do Projeto
 
