@@ -1,0 +1,5 @@
+O loop externo será executado 5 vezes com i de 0 até 4
+e toda vez que o loop externo for executado o interno exibira os números 
+de 1 até 3 seguido de um quebra de linha, assim resultando em:
+
+0 1 2 3 -> 5 vezes

@@ -1,0 +1,4 @@
+Primeiramente é solicitado um valor para n, e em seguida será lido e armazenado.
+O primeiro loop irá ser executado n vezes, começando a partir do 1.
+O segundo loop irá ser executado i vezes, assim printando os números de 1 até i;
+Formando assim um triangulo crescente de números.
