@@ -1,9 +1,68 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+
+#define MAX_PRODUTOS 100
+
+// Estrutura para representar um produto
+typedef struct {
+    char nome[51];
+    float preco;
+    float quantidade;
+    float total;
+} Produto;
+
+// Array global para armazenar produtos e contador
+//Colocando inicialmente um valor máximo de 100 produtos
+Produto produtos[MAX_PRODUTOS];
+int totalProdutos = 0;
 
 // Função para calcular o preço total do produto
 float calcularTotal(float preco, float quantidade) {
     return preco * quantidade;
+}
+
+// Função para adicionar um produto ao array
+void adicionarProduto(char nome[], float preco, float quantidade) {
+    if (totalProdutos < MAX_PRODUTOS) {
+        //Copia caracter por caracter o nome para o array de produtos
+        strcpy(produtos[totalProdutos].nome, nome);
+        produtos[totalProdutos].preco = preco;
+        produtos[totalProdutos].quantidade = quantidade;
+        produtos[totalProdutos].total = calcularTotal(preco, quantidade);
+        printf("Produto %s adicionado com sucesso!\n", nome);
+        printf("Preço total: R$ %.2f / Quantidade: %.2f\n", 
+               produtos[totalProdutos].total, quantidade);
+               totalProdutos++;
+    } else {
+        printf("Limite máximo de produtos atingido!\n");
+    }
+}
+
+// Função para listar todos os produtos
+void listarProdutos() {
+    if (totalProdutos == 0) {
+        printf("Nenhum produto cadastrado ainda.\n");
+        return;
+    }
+    
+    printf("\n=== LISTA DE PRODUTOS ===\n");
+    printf("%-20s %-10s %-10s %-10s\n", "Nome", "Preço", "Qtd", "Total");
+    printf("---------------------------------------------------\n");
+    
+    float somaTotal = 0;
+    for (int i = 0; i < totalProdutos; i++) {
+        printf("%-20s R$ %-6.2f %-10.2f R$ %-6.2f\n", 
+               produtos[i].nome, 
+               produtos[i].preco, 
+               produtos[i].quantidade, 
+               produtos[i].total);
+        somaTotal += produtos[i].total;
+    }
+    
+    printf("---------------------------------------------------\n");
+    printf("Total geral: R$ %.2f\n", somaTotal);
+    printf("Produtos cadastrados: %d\n\n", totalProdutos);
 }
 
 // Função para validar se o valor é positivo
@@ -24,16 +83,26 @@ int main () {
     // Variável para o nome do produto com ate 50 caracteres
     char nome[50];
 
+    printf("=== SISTEMA DE GERENCIAMENTO DE PRODUTOS ===\n\n");
+
     // Loop para adicionar um produto e mostrar seu preço total
     while (1) {
-        printf("Deseja adicionar um novo produto? (S/N): ");
+        printf("\n╔══════════════════════════════════════╗\n");
+        printf("║            MENU PRINCIPAL            ║\n");
+        printf("╠══════════════════════════════════════╣\n");
+        printf("║  [A] Adicionar produto               ║\n");
+        printf("║  [L] Listar produtos                 ║\n");
+        printf("║  [N] Sair do programa                ║\n");
+        printf("╚══════════════════════════════════════╝\n");
+        printf("Escolha uma opção: ");
+
         scanf(" %c", &acao);
 
         //Tratamento para aceitar tanto maiúsculas quanto minúsculas
         acao = toupper(acao);
         
         //Validação para adicionar produto ou sair
-        if (acao == 'S') {
+        if (acao == 'A') {
             //Caso ele queira adicionar um produto, pede os dados do produto
             printf("Digite o nome do produto: ");
             scanf(" %[^\n]", nome);
@@ -45,17 +114,21 @@ int main () {
             scanf("%f", &quantidade);
             //Validação para garantir que a quantidade seja positiva chamando a função
             quantidade = validacaoPositivo(quantidade);
-            printf("Produto %s adicionado com sucesso!\n", nome);
-            printf("Preço total: R$ %.2f / Quantidade: %.2f\n", calcularTotal(preco, quantidade), quantidade);
+            
+            // Chama a função para adicionar o produto
+            adicionarProduto(nome, preco, quantidade);
         }
         else if (acao == 'N')
         {
             printf("Encerrando o programa.\n");
             break;
+        } else if (acao == 'L') {
+            // Chama a função para listar produtos
+            listarProdutos();
         }
         else {
             //Validação para caso o usuário digite uma ação inválida
-            printf("Ação inválida. Por favor, digite 'S' para sim ou 'N' para não.\n");
+            printf("Ação inválida. \n");
         } 
     
     }
