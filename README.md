@@ -12,33 +12,53 @@ Este repositório contém materiais, exercícios e projetos desenvolvidos durant
 ```
 pedro-ruan-itp-2025-2/
 ├── listas/                    # Exercícios e listas resolvidas
-│   ├── semana2_variáveis_tipos_operadores/      # 4 problemas ✅
-│   ├── semana3_estruturas_condicionais/         # 8 problemas ✅
-│   ├── semana4A_repetições_simples/             # 4 problemas ✅
-│   ├── semana4B_repetições_simples/             # Questões 1-11 ✅
-│   ├── semana5_funcoes/                          # 3 problemas ✅
-│   └── semana6/                                  # 4 problemas (a fazer)
-├── projeto/                   # Projeto principal
+│   ├── semana2_variáveis_tipos_operadores/      
+│   ├── semana3_estruturas_condicionais/         
+│   ├── semana4A_repetições_simples/             
+│   ├── semana4B_repetições_simples/             
+│   ├── semana5_funcoes/                          
+│   ├── semana7_strings/                          
+│   └── semana8_repeticoes_aninhadas/            
+├── projeto/                   # Projeto principal - Sistema de Produtos
 │   ├── src/                   # Código-fonte
-│   ├── relatorio.pdf          # Relatório técnico (3-5 páginas)
-│   └── README.md              # Documentação do projeto
+│   │   ├── app/              # Lógica de negócio
+│   │   │   └── produto.c     # Sistema principal
+│   │   └── view/             # Interface
+│   │       └── test.gtk.c    # Interface GTK (teste)
+│   ├── build/                 # Arquivos compilados (criado pelo Makefile)
+│   ├── Makefile              # Automação de build
+│   └── README.md             # Documentação do projeto
 ├── .vscode/                   # Configurações do VS Code
 └── README.md                  # Este arquivo
 ```
 
 ### Descrição das Pastas
 
-- **listas/**: Exercícios organizados por semana/tema
-  - Semana 2: Variáveis, tipos e operadores (4 problemas)
-  - Semana 3: Estruturas condicionais (8 problemas)
-  - Semana 4A: Repetições simples (4 problemas)
-  - Semana 4B: Repetições simples (11 questões - 1-4 em .txt, 5-11 em .c)
-  - Semana 5: Funções (3 problemas)
-  - Semana 6: Exercícios avançados (4 problemas)
-- **projeto/**: Projeto principal com interface GTK
-  - Código-fonte modularizado
-  - Relatório técnico em PDF
-  - Documentação completa
+#### 📚 **Listas de Exercícios**
+- **Semana 2**: Variáveis, tipos e operadores 
+- **Semana 3**: Estruturas condicionais 
+- **Semana 4A**: Repetições simples 
+- **Semana 4B**: Repetições simples 
+- **Semana 5**: Funções 
+- **Semana 7**: Strings 
+- **Semana 8**: Repetições aninhadas 
+
+#### 🛍️ **Projeto Principal - Sistema de Produtos**
+Um sistema completo de gerenciamento de produtos em terminal com as seguintes funcionalidades:
+- ✅ **Adicionar produtos** (nome, preço, quantidade)
+- ✅ **Listar produtos** (com IDs, formatação tabular e totais)
+- ✅ **Deletar produtos** (com confirmação e reorganização de IDs)
+- ✅ **Validações** (valores positivos, confirmações)
+- ✅ **Interface amigável** (menu com bordas ASCII)
+
+**Características técnicas:**
+- Uso de `struct` com `typedef` para organização de dados
+- Arrays para armazenamento de até 100 produtos
+- Funções modulares para cada operação
+- Sistema de IDs automático e reorganização após deleções
+- Makefile para compilação automatizada
+
+#### ⚙️ **Configurações**
 - **.vscode/**: Configurações de IntelliSense para C/GTK
 
 ## 📋 Checklist de Entrega
@@ -48,46 +68,41 @@ pedro-ruan-itp-2025-2/
 - [x] Estrutura de pastas organizada
 - [x] Link do repositório: [https://github.com/ruannnrcn/pedro-ruan-itp-2025-2](https://github.com/ruannnrcn/pedro-ruan-itp-2025-2)
 
-### 📁 Projeto
-- [x] Código usa conceitos da Unidade 1
-- [x] Possui 3+ funções além da main
-- [ ] Relatório técnico em PDF (3-5 páginas) - **PENDENTE**
-- [x] Projeto executa corretamente
-
-### 📝 Listas Resolvidas
-- [x] Semana 2: 4 problemas (variáveis, tipos, operadores)
-- [x] Semana 3: 8 problemas (estruturas condicionais)
-- [x] Semana 4A: 4 problemas (repetições simples)
-- [x] Semana 4B: Questões 1-4 (.txt) e 5-11 (.c)
-- [x] Semana 5: 3 problemas (funções)
-- [ ] Semana 6: 4 problemas - **PENDENTE**
-
-### 🎥 Vídeo
-- [x] Duração: 5-8 minutos
-- [x] Link acessível no README
-- [x] Demonstra o projeto funcionando
-
-## 📦 Como Gerar o ZIP de Entrega
-
-Para criar o arquivo `sobrenome-nome-itp-u1-2025-2.zip`:
-
-```bash
-cd ~/projects
-zip -r ruan-pedro-itp-u1-2025-2.zip pedro-ruan-itp-2025-2/ \
-    -x "*.git*" "*/build/*" "*/bin/*" "*/__pycache__/*"
-```
+### �️ Projeto Principal
+- [x] **Sistema de Produtos** implementado
+- [x] Usa conceitos da Unidade 1 (variáveis, estruturas, funções, arrays)
+- [x] Possui 4+ funções além da main:
+  - `calcularTotal()` - Calcula preço total
+  - `adicionarProduto()` - Adiciona produto ao sistema
+  - `listarProdutos()` - Lista todos os produtos
+  - `deletarProduto()` - Remove produto do sistema
+  - `validacaoPositivo()` - Valida valores positivos
+- [x] Projeto executa corretamente com `make run`
+- [x] Interface de terminal funcional e intuitiva
 
 ## 🚀 Como Usar
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/ruannnrcn/pedro-ruan-itp-2025-2.git
-   cd pedro-ruan-itp-2025-2
-   ```
+### 📦 Clonando o Repositório
+```bash
+git clone https://github.com/ruannnrcn/pedro-ruan-itp-2025-2.git
+cd pedro-ruan-itp-2025-2
+```
 
-2. Para trabalhar com o projeto principal, acesse a pasta `projeto/` e siga as instruções no [README do projeto](./projeto/README.md).
+### 🛍️ Executando o Projeto Principal
+```bash
+cd projeto/
+make run          # Compila e executa o sistema
+make clean        # Limpa arquivos compilados
+make rebuild      # Recompila tudo do zero e executa
+```
 
-3. Para os exercícios das listas, navegue até `listas/` e compile os arquivos individualmente.
+### 🎮 Usando o Sistema de Produtos
+1. Execute com `make run`
+2. Use o menu interativo:
+   - **[A]** - Adicionar um novo produto
+   - **[L]** - Listar todos os produtos
+   - **[D]** - Deletar um produto (por ID)
+   - **[N]** - Sair do programa
 
 ## 🔧 Tecnologias Utilizadas
 
@@ -106,4 +121,4 @@ Repositório: [https://github.com/ruannnrcn/pedro-ruan-itp-2025-2](https://githu
 
 ---
 
-**Última atualização:** Outubro/2025
+**Última atualização:** Novembro/2025

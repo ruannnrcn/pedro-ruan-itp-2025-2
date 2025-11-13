@@ -1,71 +1,102 @@
-# Projeto ITP 2025-2 - Sistema de Cadastro de Produtos
+# Projeto ITP 2025-2 - Sistema de Gerenciamento de Produtos
 
-Este é o projeto principal do curso, desenvolvido em C com interface gráfica GTK.
+Este é o projeto principal do curso, desenvolvido em C com interface de terminal e preparação para interface gráfica GTK.
 
 ## 🎯 Objetivo
 
-Desenvolver um sistema de cadastro de produtos com validação de dados, cálculos automáticos e interface gráfica, aplicando conceitos de programação estruturada, modularização e boas práticas de desenvolvimento.
+Desenvolver um sistema completo de gerenciamento de produtos com funcionalidades de CRUD (Create, Read, Update, Delete), validação de dados, cálculos automáticos e interface amigável, aplicando conceitos de programação estruturada, modularização e boas práticas de desenvolvimento.
 
 ## 🎥 Demonstração
 
 Assista ao vídeo de apresentação: [https://youtu.be/ISW3GK7lOW8](https://youtu.be/ISW3GK7lOW8)
 
-## ⚙️ Funcionalidades Implementadas
-
-- ✅ Cadastro de produtos com nome, preço unitário e quantidade
-- ✅ Validação de entrada de dados (valores positivos)
-- ✅ Cálculo automático do valor total (preço × quantidade)
-- ✅ Exibição de informações completas do produto
-- ✅ Interface via linha de comando (CLI)
-- ⏳ Interface gráfica GTK (em desenvolvimento)
-
 ## Estrutura do Projeto
 
 ```
 projeto/
-├── src/           # Código-fonte principal
-│   ├── app/       # Lógica da aplicação e regras de negócio
-│   └── view/      # Interface gráfica (GTK)
-├── .vscode/       # Configurações do VS Code (IntelliSense, includes)
-└── README.md      # Este arquivo de documentação
+├── src/               # Código-fonte principal
+│   ├── app/           # Lógica da aplicação e regras de negócio
+│   │   └── produto.c  # Sistema principal completo
+│   └── view/          # Interface gráfica (preparação futura)
+│       └── test.gtk.c # Exemplo básico de janela GTK
+├── build/             # Arquivos compilados (criado automaticamente)
+├── Makefile           # Automação de compilação e execução
+└── README.md          # Este arquivo de documentação
 ```
 
 ### Descrição das Pastas
 
-- **src/app/**: Contém a lógica da aplicação
-  - `produto.c`: Implementação do sistema de cadastro com validações e cálculos
-- **src/view/**: Contém os arquivos de interface gráfica
-  - `test.gtk.c`: Exemplo de janela GTK (base para interface futura)
-- **.vscode/**: Configurações do VS Code para IntelliSense C/GTK
+- **src/app/**: Contém a lógica completa da aplicação
+  - `produto.c`: Sistema completo de gerenciamento com CRUD, validações e interface
+- **src/view/**: Preparação para interface gráfica futura
+  - `test.gtk.c`: Exemplo básico de janela GTK para testes
+- **build/**: Diretório para arquivos compilados (criado automaticamente pelo Makefile)
+- **Makefile**: Automação completa de build com comandos simplificados
 
 ## 🚀 Como Compilar e Executar
 
-### Sistema de Cadastro (CLI)
+### 🎮 Sistema Principal (Recomendado)
 
-Entre na pasta `src/app` e execute:
+**Compilar e executar em um comando:**
+```bash
+make run
+```
 
+**Outros comandos úteis:**
+```bash
+make clean        # Remove arquivos compilados
+```
+
+### 📋 Menu do Sistema
+Após executar, você verá um menu interativo:
+
+```
+╔══════════════════════════════════════╗
+║            MENU PRINCIPAL            ║
+╠══════════════════════════════════════╣
+║  [A] Adicionar produto               ║
+║  [D] Deletar produto                 ║
+║  [L] Listar produtos                 ║
+║  [N] Sair do programa                ║
+╚══════════════════════════════════════╝
+```
+
+### 💡 Exemplo de Uso
+
+**1. Adicionar um produto:**
+```
+Escolha uma opção: A
+Digite o nome do produto: Notebook Dell
+Digite o preço do produto: 2500.50
+Digite a quantidade do produto: 2
+Produto Notebook Dell adicionado com sucesso!
+Preço total: R$ 5001.00 / Quantidade: 2.00
+```
+
+**2. Listar produtos:**
+```
+=== LISTA DE PRODUTOS ===
+ID  Nome                 Preço     Qtd        Total     
+-------------------------------------------------------
+0   Notebook Dell        R$ 2500.50 2.00       R$ 5001.00
+1   Mouse Logitech       R$ 89.90   1.00       R$ 89.90
+-------------------------------------------------------
+Total geral: R$ 5090.90
+Produtos cadastrados: 2
+```
+
+### 🧪 Compilação Manual (Opcional)
+
+Se preferir compilar manualmente:
 ```bash
 cd src/app
-gcc produto.c -o produto
+gcc -Wall produto.c -o produto
 ./produto
 ```
 
-**Exemplo de uso:**
-```
-Digite o nome do produto: Notebook
-Digite o preço unitário: 2500.00
-Digite a quantidade: 3
+### 🧪 Interface GTK (Experimental)
 
-Produto cadastrado com sucesso!
-Nome: Notebook
-Preço unitário: R$ 2500.00
-Quantidade: 3
-Valor total: R$ 7500.00
-```
-
-### Interface GTK (em desenvolvimento)
-
-Entre na pasta `src/view` e execute:
+Para testar a janela GTK de exemplo:
 
 ```bash
 cd src/view
@@ -73,55 +104,63 @@ gcc test.gtk.c -o test-gtk `pkg-config --cflags --libs gtk+-3.0`
 ./test-gtk
 ```
 
-## Requisitos
+## Requisitos do Sistema
 
-- **Sistema Operacional**: Linux ou WSL
-- **Bibliotecas**: 
-  - GTK 3 development libraries (`libgtk-3-dev`)
-  - HarfBuzz development (`libharfbuzz-dev`)
-  - ATK development (`libatk1.0-dev`)
-- **Compilador**: GCC
-- **Editor**: VS Code (opcional, recomendado para melhor experiência)
+### 🖥️ **Ambiente Mínimo**
+- **Sistema Operacional**: Linux, WSL ou macOS
+- **Compilador**: GCC (GNU Compiler Collection)
+- **Make**: Para automação de build
 
-### Instalação das Dependências
-
-No Ubuntu/Debian/WSL:
-
+### 📦 **Para Interface GTK (Opcional)**
 ```bash
+# Ubuntu/Debian/WSL
 sudo apt update
-sudo apt install build-essential libgtk-3-dev libharfbuzz-dev libatk1.0-dev
+sudo apt install build-essential libgtk-3-dev
+
+# Fedora/RedHat
+sudo dnf install gcc gtk3-devel
+
+# macOS (com Homebrew)
+brew install gtk+3
 ```
-
-## Configuração do Ambiente de Desenvolvimento
-
-Para garantir o funcionamento correto do IntelliSense no VS Code:
-
-1. A pasta `.vscode` deve estar versionada (já está incluída no projeto)
-2. O arquivo `c_cpp_properties.json` contém os caminhos de include necessários para GTK
-3. Ao abrir o projeto no VS Code, o IntelliSense reconhecerá automaticamente os headers do GTK
-
-## 📚 Conceitos Aplicados
-
-- **Modularização**: Código organizado em funções reutilizáveis
-- **Validação de dados**: Verificação de entradas do usuário
-- **Estruturas de controle**: Loops e condicionais
-- **Tipos de dados**: Uso adequado de int, float, char
-- **Boas práticas**: Código limpo, comentado e bem estruturado
 
 ## 🔧 Tecnologias Utilizadas
 
-- **Linguagem**: C (padrão C17)
-- **Compilador**: GCC
-- **Interface Gráfica**: GTK 3 (planejada)
-- **Ambiente**: Linux/WSL
+- **Linguagem**: C (padrão C99)
+- **Compilador**: GCC com flags de segurança (`-Wall -Wextra`)
+- **Build System**: Make (Makefile personalizado)
+- **Interface**: Terminal/CLI com formatação ASCII
+- **Estruturas de Dados**: Arrays, structs e typedef
+- **Ambiente de Desenvolvimento**: Linux/WSL
 - **Controle de Versão**: Git
 
-## 📝 Observações
+## � Resolução de Problemas
 
-- Para garantir o funcionamento do IntelliSense, mantenha a pasta `.vscode` versionada
-- Se estiver usando WSL, certifique-se de ter um servidor X instalado (VcXsrv, Xming, etc.) para visualizar as janelas GTK
-- O projeto está em desenvolvimento contínuo, com melhorias sendo adicionadas regularmente
+### ❌ **Erro de Compilação**
+```bash
+# Se o make não funcionar, compile manualmente:
+cd src/app
+gcc -Wall produto.c -o produto
+```
 
-## 👨‍💻 Autor
+### 📁 **Pasta build não criada**
+```bash
+# Crie manualmente se necessário:
+mkdir build
+```
 
-Pedro Ruan - Estudante de ITP 2025-2
+### 🚫 **Permissão negada**
+```bash
+# Torne o arquivo executável:
+chmod +x build/produto
+```
+
+## �👨‍💻 Autor
+
+**Pedro Ruan**  
+Estudante de ITP 2025-2  
+GitHub: [@ruannnrcn](https://github.com/ruannnrcn)
+
+---
+
+*Sistema desenvolvido como projeto final da disciplina Introdução às Técnicas de Programação, demonstrando competências em programação estruturada, manipulação de dados e desenvolvimento de interfaces.*

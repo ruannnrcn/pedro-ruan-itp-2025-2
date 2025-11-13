@@ -1,6 +1,6 @@
 # Makefile para o Sistema de Produtos
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
+CFLAGS = -Wall 
 
 # Diretórios
 SRC_DIR = src/app
@@ -31,8 +31,5 @@ run: $(BUILD_DIR)/$(TARGET)
 clean:
 	rm -rf $(BUILD_DIR)
 	@echo "Arquivos removidos"
-
-# Recompilar e executar
-rebuild: clean all run
 
 .PHONY: all run clean rebuild
