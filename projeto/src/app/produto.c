@@ -6,6 +6,7 @@
 
 // Estrutura para representar um produto
 typedef struct {
+    int id;
     char nome[51];
     float preco;
     float quantidade;
@@ -27,6 +28,9 @@ void adicionarProduto(char nome[], float preco, float quantidade) {
     if (totalProdutos < MAX_PRODUTOS) {
         //Copia caracter por caracter o nome para o array de produtos
         strcpy(produtos[totalProdutos].nome, nome);
+        
+        //Define todos os atributos do produto
+        produtos[totalProdutos].id = totalProdutos;  
         produtos[totalProdutos].preco = preco;
         produtos[totalProdutos].quantidade = quantidade;
         produtos[totalProdutos].total = calcularTotal(preco, quantidade);
@@ -40,19 +44,20 @@ void adicionarProduto(char nome[], float preco, float quantidade) {
 }
 
 // Função para listar todos os produtos
-void listarProdutos() {
+int listarProdutos() {
     if (totalProdutos == 0) {
         printf("Nenhum produto cadastrado ainda.\n");
-        return;
+        return 0;
     }
     
     printf("\n=== LISTA DE PRODUTOS ===\n");
-    printf("%-20s %-10s %-10s %-10s\n", "Nome", "Preço", "Qtd", "Total");
-    printf("---------------------------------------------------\n");
+    printf("%-3s %-20s %-10s %-10s %-10s\n", "ID", "Nome", "Preço", "Qtd", "Total");
+    printf("-------------------------------------------------------\n");
     
     float somaTotal = 0;
     for (int i = 0; i < totalProdutos; i++) {
-        printf("%-20s R$ %-6.2f %-10.2f R$ %-6.2f\n", 
+        printf("%-3d %-20s R$ %-6.2f %-10.2f R$ %-6.2f\n", 
+               produtos[i].id,
                produtos[i].nome, 
                produtos[i].preco, 
                produtos[i].quantidade, 
@@ -60,9 +65,10 @@ void listarProdutos() {
         somaTotal += produtos[i].total;
     }
     
-    printf("---------------------------------------------------\n");
+    printf("-------------------------------------------------------\n");
     printf("Total geral: R$ %.2f\n", somaTotal);
     printf("Produtos cadastrados: %d\n\n", totalProdutos);
+    return 1; // Retorna 1 se há produtos
 }
 
 // Função para validar se o valor é positivo
@@ -74,11 +80,40 @@ float validacaoPositivo (float valor) {
     return valor;
 }
 
+//Função para deletar um produto
+int deletarProduto(int id) {
+    if (id < 0 || id >= totalProdutos) {
+        printf("ID inválido. Nenhum produto deletado.\n");
+        return 0;
+    }
+
+    //Validação para confirmar a deleção
+    char confirmacao;
+    printf("Tem certeza que deseja deletar o produto %s? (S/N): ", produtos[id].nome);
+    scanf(" %c", &confirmacao);
+    confirmacao = toupper(confirmacao);
+
+    if (confirmacao != 'S') {
+        printf("Deleção cancelada.\n");
+        return 0;
+    }
+
+    // Move os produtos para preencher o espaço do produto deletado
+    for (int i = id; i < totalProdutos - 1; i++) {
+        produtos[i] = produtos[i + 1];
+        produtos[i].id = i; // Atualiza o ID do produto
+    }
+    totalProdutos--;
+    printf("Produto com ID %d deletado com sucesso!\n", id);
+    return 1;
+}
+
 
 int main () {
     //Declaração de variáveis
     float preco, quantidade;
     char acao;
+    int id; //Idenficador do produto 
 
     // Variável para o nome do produto com ate 50 caracteres
     char nome[50];
@@ -91,6 +126,7 @@ int main () {
         printf("║            MENU PRINCIPAL            ║\n");
         printf("╠══════════════════════════════════════╣\n");
         printf("║  [A] Adicionar produto               ║\n");
+        printf("║  [D] Deletar produto                 ║\n");
         printf("║  [L] Listar produtos                 ║\n");
         printf("║  [N] Sair do programa                ║\n");
         printf("╚══════════════════════════════════════╝\n");
@@ -118,6 +154,15 @@ int main () {
             // Chama a função para adicionar o produto
             adicionarProduto(nome, preco, quantidade);
         }
+        else if (acao == 'D') {
+            // Verifica se há produtos para deletar
+            if (listarProdutos()) {
+                printf("Digite o ID do produto a ser deletado: ");
+                scanf("%d", &id);
+                deletarProduto(id);
+            }
+        }
+        
         else if (acao == 'N')
         {
             printf("Encerrando o programa.\n");
