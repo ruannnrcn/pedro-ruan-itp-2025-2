@@ -93,7 +93,6 @@ cd pedro-ruan-itp-2025-2
 cd projeto/
 make run          # Compila e executa o sistema
 make clean        # Limpa arquivos compilados
-make rebuild      # Recompila tudo do zero e executa
 ```
 
 ### 🎮 Usando o Sistema de Produtos
