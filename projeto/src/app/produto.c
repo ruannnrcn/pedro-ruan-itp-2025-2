@@ -24,20 +24,19 @@ float calcularTotal(float preco, float quantidade) {
 }
 
 // Função para adicionar um produto ao array
-void adicionarProduto(char nome[], float preco, float quantidade) {
+void adicionarProduto(Produto produto) {
     if (totalProdutos < MAX_PRODUTOS) {
-        //Copia caracter por caracter o nome para o array de produtos
-        strcpy(produtos[totalProdutos].nome, nome);
+        // Copia o produto recebido para o array
+        produtos[totalProdutos] = produto;
         
-        //Define todos os atributos do produto
-        produtos[totalProdutos].id = totalProdutos;  
-        produtos[totalProdutos].preco = preco;
-        produtos[totalProdutos].quantidade = quantidade;
-        produtos[totalProdutos].total = calcularTotal(preco, quantidade);
-        printf("Produto %s adicionado com sucesso!\n", nome);
+        // Define o ID e calcula o total
+        produtos[totalProdutos].id = totalProdutos;
+        produtos[totalProdutos].total = calcularTotal(produto.preco, produto.quantidade);
+        
+        printf("Produto %s adicionado com sucesso!\n", produto.nome);
         printf("Preço total: R$ %.2f / Quantidade: %.2f\n", 
-               produtos[totalProdutos].total, quantidade);
-               totalProdutos++;
+               produtos[totalProdutos].total, produto.quantidade);
+        totalProdutos++;
     } else {
         printf("Limite máximo de produtos atingido!\n");
     }
@@ -114,9 +113,10 @@ int main () {
     float preco, quantidade;
     char acao;
     int id; //Idenficador do produto 
+    Produto novoProduto; // Estrutura para o novo produto
 
     // Variável para o nome do produto com ate 50 caracteres
-    char nome[50];
+    char nome[51];
 
     printf("=== SISTEMA DE GERENCIAMENTO DE PRODUTOS ===\n\n");
 
@@ -151,8 +151,12 @@ int main () {
             //Validação para garantir que a quantidade seja positiva chamando a função
             quantidade = validacaoPositivo(quantidade);
             
+            strcpy(novoProduto.nome, nome);
+            novoProduto.preco = preco;
+            novoProduto.quantidade = quantidade;
+            
             // Chama a função para adicionar o produto
-            adicionarProduto(nome, preco, quantidade);
+            adicionarProduto(novoProduto);
         }
         else if (acao == 'D') {
             // Verifica se há produtos para deletar
