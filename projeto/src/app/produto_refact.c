@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
-#define MAX_PRODUTOS 100
+#include <stdlib.h>
 
 // Estrutura para representar um produto
 typedef struct {
@@ -14,8 +13,8 @@ typedef struct {
 } Produto;
 
 // Array global para armazenar produtos e contador
-//Colocando inicialmente um valor máximo de 100 produtos
-Produto produtos[MAX_PRODUTOS];
+// Usando alocação dinâmica para não ter limite fixo
+Produto* produtos = NULL;
 int totalProdutos = 0;
 
 // Função para calcular o preço total do produto
@@ -25,21 +24,26 @@ float calcularTotal(float preco, float quantidade) {
 
 // Função para adicionar um produto ao array
 void adicionarProduto(Produto produto) {
-    if (totalProdutos < MAX_PRODUTOS) {
-        // Copia o produto recebido para o array
-        produtos[totalProdutos] = produto;
-        
-        // Define o ID e calcula o total
-        produtos[totalProdutos].id = totalProdutos;
-        produtos[totalProdutos].total = calcularTotal(produto.preco, produto.quantidade);
-        
-        printf("Produto %s adicionado com sucesso!\n", produto.nome);
-        printf("Preço total: R$ %.2f / Quantidade: %.2f\n", 
-               produtos[totalProdutos].total, produto.quantidade);
-        totalProdutos++;
-    } else {
-        printf("Limite máximo de produtos atingido!\n");
+    // Realoca memória para um produto adicional
+    Produto* temp = realloc(produtos, (totalProdutos + 1) * sizeof(Produto));
+    
+    if (temp == NULL) {
+        printf("Erro: Não foi possível alocar memória para o novo produto!\n");
+        return;
     }
+    produtos = temp;
+    
+    // Copia o produto recebido para o array
+    produtos[totalProdutos] = produto;
+    
+    // Define o ID e calcula o total
+    produtos[totalProdutos].id = totalProdutos;
+    produtos[totalProdutos].total = calcularTotal(produto.preco, produto.quantidade);
+    
+    printf("Produto %s adicionado com sucesso!\n", produto.nome);
+    printf("Preço total: R$ %.2f / Quantidade: %.2f\n", 
+           produtos[totalProdutos].total, produto.quantidade);
+    totalProdutos++;
 }
 
 // Função para listar todos os produtos
@@ -102,21 +106,23 @@ int deletarProduto(int id) {
         produtos[i] = produtos[i + 1];
         produtos[i].id = i; // Atualiza o ID do produto
     }
+    
     totalProdutos--;
+    
+    // Se não há mais produtos, libera toda a memória
+    if (totalProdutos == 0) {
+        free(produtos);
+        produtos = NULL;
+    } else {
+        // Realoca memória para o novo tamanho
+        Produto* temp = realloc(produtos, totalProdutos * sizeof(Produto));
+        if (temp != NULL) {
+            produtos = temp;
+        }
+    }
+    
     printf("Produto com ID %d deletado com sucesso!\n", id);
     return 1;
-}
-
-void imprimirMenu() {
-    printf("\n╔══════════════════════════════════════╗\n");
-    printf("║            MENU PRINCIPAL            ║\n");
-    printf("╠══════════════════════════════════════╣\n");
-    printf("║  [A] Adicionar produto               ║\n");
-    printf("║  [D] Deletar produto                 ║\n");
-    printf("║  [L] Listar produtos                 ║\n");
-    printf("║  [N] Sair do programa                ║\n");
-    printf("╚══════════════════════════════════════╝\n");
-    printf("Escolha uma opção: ");
 }
 
 
@@ -134,7 +140,15 @@ int main () {
 
     // Loop para adicionar um produto e mostrar seu preço total
     while (1) {
-        imprimirMenu();
+        printf("\n╔══════════════════════════════════════╗\n");
+        printf("║            MENU PRINCIPAL            ║\n");
+        printf("╠══════════════════════════════════════╣\n");
+        printf("║  [A] Adicionar produto               ║\n");
+        printf("║  [D] Deletar produto                 ║\n");
+        printf("║  [L] Listar produtos                 ║\n");
+        printf("║  [N] Sair do programa                ║\n");
+        printf("╚══════════════════════════════════════╝\n");
+        printf("Escolha uma opção: ");
 
         scanf(" %c", &acao);
 
@@ -180,6 +194,11 @@ int main () {
                 
             case 'N':
                 printf("Encerrando o programa.\n");
+                // Libera a memória alocada antes de sair
+                if (produtos != NULL) {
+                    free(produtos);
+                    produtos = NULL;
+                }
                 break;
                 
             default:
@@ -187,7 +206,7 @@ int main () {
                 printf("Ação inválida. \n");
                 break;
         }
-        
+
         // Sai do loop se a ação for 'N'
         if (acao == 'N') {
             break;
