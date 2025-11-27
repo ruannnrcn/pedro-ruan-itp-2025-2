@@ -4,6 +4,9 @@
 
 #define MAX_PRODUTOS 100
 
+//Estrutura principal do projeto para produto.c, focando em CLI
+
+
 // Estrutura para representar um produto
 typedef struct {
     int id;
@@ -107,11 +110,71 @@ int deletarProduto(int id) {
     return 1;
 }
 
+void mostrarDadosProduto(int id) {
+    if (id < 0 || id >= totalProdutos) {
+        printf("ID inválido.\n");
+        return;
+    }
+    
+    printf("\n=== DADOS DO PRODUTO (ID: %d) ===\n", id);
+    printf("Nome: %s\n", produtos[id].nome);
+    printf("Preço: R$ %.2f\n", produtos[id].preco);
+    printf("Quantidade: %.2f\n", produtos[id].quantidade);
+    printf("Total: R$ %.2f\n", produtos[id].total);
+    printf("--------------------------------\n");
+}
+
+int editarProduto(int id, const char* nome, float preco, float quantidade) {
+    // Validação de ID
+    if (id < 0 || id >= totalProdutos) {
+        printf("ID inválido. Nenhum produto editado.\n");
+        return 0;
+    }
+    
+    // Validação dos dados
+    if (nome == NULL || strlen(nome) == 0) {
+        printf("Nome inválido. Nenhum produto editado.\n");
+        return 0;
+    }
+    
+    if (preco <= 0 || quantidade <= 0) {
+        printf("Preço e quantidade devem ser positivos. Nenhum produto editado.\n");
+        return 0;
+    }
+
+    printf("\n--- DADOS ATUAIS ---");
+    mostrarDadosProduto(id);
+    
+    // Confirmação da edição
+    char confirmacao;
+    printf("\nTem certeza que deseja editar este produto? (S/N): ");
+    scanf(" %c", &confirmacao);
+    confirmacao = toupper(confirmacao);
+    
+    if (confirmacao != 'S') {
+        printf("Edição cancelada.\n");
+        return 0;
+    }
+    
+    // Atualiza os dados do produto
+    strncpy(produtos[id].nome, nome, 50);
+    produtos[id].nome[50] = '\0';
+    produtos[id].preco = preco;
+    produtos[id].quantidade = quantidade;
+    produtos[id].total = calcularTotal(preco, quantidade);
+    
+    printf("\n--- DADOS APÓS A EDIÇÃO  ---");
+    mostrarDadosProduto(id);
+    
+    return 1;
+}
+
 void imprimirMenu() {
     printf("\n╔══════════════════════════════════════╗\n");
     printf("║            MENU PRINCIPAL            ║\n");
     printf("╠══════════════════════════════════════╣\n");
     printf("║  [A] Adicionar produto               ║\n");
+    printf("║  [E] Editar produto                  ║\n");
     printf("║  [D] Deletar produto                 ║\n");
     printf("║  [L] Listar produtos                 ║\n");
     printf("║  [N] Sair do programa                ║\n");
@@ -162,6 +225,34 @@ int main () {
                 
                 // Chama a função para adicionar o produto
                 adicionarProduto(novoProduto);
+                break;
+                
+            case 'E':
+                // Verifica se há produtos para editar
+                if (listarProdutos()) {
+                    printf("Digite o ID do produto a ser editado: ");
+                    scanf("%d", &id);
+                    
+                    // Verifica se o ID é válido antes de pedir novos dados
+                    if (id >= 0 && id < totalProdutos) {
+                        printf("\n=== EDITANDO PRODUTO ===\n");
+                        printf("Digite o novo nome do produto: ");
+                        scanf(" %[^\n]", nome);
+                        printf("Digite o novo preço do produto: ");
+                        scanf("%f", &preco);
+                        //Validação para garantir que o preço seja positivo
+                        preco = validacaoPositivo(preco);
+                        printf("Digite a nova quantidade do produto: ");
+                        scanf("%f", &quantidade);
+                        //Validação para garantir que a quantidade seja positiva
+                        quantidade = validacaoPositivo(quantidade);
+                        
+                        // Chama a função para editar o produto
+                        editarProduto(id, nome, preco, quantidade);
+                    } else {
+                        printf("ID inválido!\n");
+                    }
+                }
                 break;
                 
             case 'D':
