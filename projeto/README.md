@@ -1,55 +1,109 @@
 # Projeto ITP 2025-2 - Sistema de Gerenciamento de Produtos
 
-Este é o projeto principal do curso, desenvolvido em C com interface de terminal e preparação para interface gráfica GTK.
+Este é o projeto principal do curso, desenvolvido em C com múltiplas interfaces: terminal (CLI) e interface gráfica GTK. O projeto utiliza uma arquitetura modular com separação entre lógica de negócio (core) e interfaces (view).
 
 ## 🎯 Objetivo
 
 Desenvolver um sistema completo de gerenciamento de produtos com funcionalidades de CRUD (Create, Read, Update, Delete), validação de dados, cálculos automáticos e interface amigável, aplicando conceitos de programação estruturada, modularização e boas práticas de desenvolvimento.
 
-## 🎥 Demonstração
-
-Assista ao vídeo de apresentação: [https://youtu.be/ISW3GK7lOW8](https://youtu.be/ISW3GK7lOW8)
-
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 projeto/
-├── src/               # Código-fonte principal
-│   ├── app/           # Lógica da aplicação e regras de negócio
-│   │   └── produto.c  # Sistema principal completo
-│   └── view/          # Interface gráfica (preparação futura)
-│       └── test.gtk.c # Exemplo básico de janela GTK
-├── build/             # Arquivos compilados (criado automaticamente)
-├── Makefile           # Automação de compilação e execução
-└── README.md          # Este arquivo de documentação
+├── src/                    # Código-fonte principal
+│   ├── app/               # Lógica da aplicação (core + CLI)
+│   │   ├── produto.c      # Sistema original completo
+│   │   ├── produto_core.c # Lógica de negócio (backend)
+│   │   ├── produto_core.h # Interface do core
+│   │   └── produto_cli.c  # Interface de linha de comando
+│   └── view/              # Interface gráfica GTK
+│       ├── produto_gui.c    # Janela principal GTK
+│       ├── produto_gui.h    # Header da interface GTK
+│       ├── produto_callbacks.c # Callbacks dos botões
+│       └── main_gui.c       # Ponto de entrada da GUI
+├── build/                 # Executáveis (criado automaticamente)
+├── Makefile              # Automação completa de build
+└── README.md             # Este arquivo
 ```
 
-### Descrição das Pastas
+### 🏗️ Arquitetura do Sistema
 
-- **src/app/**: Contém a lógica completa da aplicação
-  - `produto.c`: Sistema completo de gerenciamento com CRUD, validações e interface
-- **src/view/**: Preparação para interface gráfica futura
-  - `test.gtk.c`: Exemplo básico de janela GTK para testes
-- **build/**: Diretório para arquivos compilados (criado automaticamente pelo Makefile)
-- **Makefile**: Automação completa de build com comandos simplificados
+- **Core (Backend)**: `produto_core.c/h` - Lógica de negócio pura, sem interface
+- **CLI**: `produto_cli.c` - Interface de terminal usando o core
+- **GUI**: `view/` - Interface gráfica GTK usando o core  
+- **Original**: `produto.c` - Versão monolítica original (compatibilidade)
 
 ## 🚀 Como Compilar e Executar
 
-### 🎮 Sistema Principal (Recomendado)
+### 🎮 **Comandos Principais (Recomendado)**
 
-**Compilar e executar em um comando:**
+**📋 Ver todos os comandos disponíveis:**
+```bash
+make help
+```
+
+**⚡ Execução rápida (produto.c original):**
 ```bash
 make run
 ```
 
-**Outros comandos úteis:**
+**🔄 Recompilar e executar:**
 ```bash
-make clean        # Remove arquivos compilados
+make rebuild
 ```
 
-### 📋 Menu do Sistema
-Após executar, você verá um menu interativo:
+**🧹 Limpar arquivos compilados:**
+```bash
+make clean
+```
 
+### 🎛️ **Opções de Interface**
+
+**1. 🖥️ Interface CLI (Terminal)**
+```bash
+# Compilar e executar CLI modular
+make run-cli
+
+# Apenas compilar CLI
+make cli
+```
+
+**2. 🎨 Interface Gráfica GTK**
+```bash
+# Compilar e executar GUI
+make run-gui
+
+# Apenas compilar GUI
+make gui
+```
+
+**3. 📄 Versão Original (Monolítica)**
+```bash
+# Executar produto.c original
+make run
+
+# Apenas compilar original
+make original
+```
+
+### 🔧 **Comandos Avançados**
+
+**Recompilar interfaces específicas:**
+```bash
+make rebuild-cli    # Reconstrói apenas CLI
+make rebuild-gui    # Reconstrói apenas GUI
+make rebuild-all    # Reconstrói tudo
+```
+
+**Limpeza seletiva:**
+```bash
+make clean-gui      # Remove apenas executável GUI
+make clean          # Remove todos os executáveis
+```
+
+### 📋 Funcionalidades do Sistema
+
+**Menu Principal (CLI/Original):**
 ```
 ╔══════════════════════════════════════╗
 ║            MENU PRINCIPAL            ║
@@ -60,6 +114,12 @@ Após executar, você verá um menu interativo:
 ║  [N] Sair do programa                ║
 ╚══════════════════════════════════════╝
 ```
+
+**Interface Gráfica GTK:**
+- Janela intuitiva com botões
+- Formulários para entrada de dados
+- Listagem visual de produtos
+- Cálculos automáticos em tempo real
 
 ### 💡 Exemplo de Uso
 
@@ -85,77 +145,69 @@ Total geral: R$ 5090.90
 Produtos cadastrados: 2
 ```
 
-### 🧪 Compilação Manual (Opcional)
+### 🧪 **Compilação Manual (Opcional)**
 
-Se preferir compilar manualmente:
+**Se preferir não usar o Makefile:**
+
 ```bash
+# Produto original
 cd src/app
-gcc -Wall produto.c -o produto
+gcc -Wall -o produto produto.c
 ./produto
+
+# CLI modular
+gcc -Wall -I. produto_cli.c produto_core.c -o produto_cli
+./produto_cli
+
+# Interface gráfica GTK
+cd ../view
+gcc -I../app produto_gui.c produto_callbacks.c main_gui.c ../app/produto_core.c \
+    -o produto_gui `pkg-config --cflags --libs gtk+-3.0`
+./produto_gui
 ```
 
-### 🧪 Interface GTK (Experimental)
+## ⚙️ Requisitos do Sistema
 
-Para testar a janela GTK de exemplo:
-
-```bash
-cd src/view
-gcc test.gtk.c -o test-gtk `pkg-config --cflags --libs gtk+-3.0`
-./test-gtk
-```
-
-## Requisitos do Sistema
-
-### 🖥️ **Ambiente Mínimo**
-- **Sistema Operacional**: Linux, WSL ou macOS
+### 🖥️ **Para Interface CLI (Terminal)**
+- **Sistema Operacional**: Linux, WSL, macOS
 - **Compilador**: GCC (GNU Compiler Collection)
-- **Make**: Para automação de build
+- **Make**: Para automação de build (opcional)
 
-### 📦 **Para Interface GTK (Opcional)**
+### 🎨 **Para Interface Gráfica GTK (Opcional)**
+- **Dependências GTK+3**:
+  ```bash
+  # Ubuntu/Debian/WSL
+  sudo apt update
+  sudo apt install build-essential libgtk-3-dev pkg-config
+  
+  # Fedora/RedHat
+  sudo dnf install gcc gtk3-devel pkg-config
+  
+  # macOS (com Homebrew)
+  brew install gtk+3 pkg-config
+  ```
+
+### 🔍 **Verificar Instalação**
 ```bash
-# Ubuntu/Debian/WSL
-sudo apt update
-sudo apt install build-essential libgtk-3-dev
+# Verificar se GTK está disponível
+make check-gtk
 
-# Fedora/RedHat
-sudo dnf install gcc gtk3-devel
-
-# macOS (com Homebrew)
-brew install gtk+3
+# Instalar dependências automaticamente (Ubuntu/Debian)
+make install-deps
 ```
 
 ## 🔧 Tecnologias Utilizadas
 
 - **Linguagem**: C (padrão C99)
-- **Compilador**: GCC com flags de segurança (`-Wall -Wextra`)
-- **Build System**: Make (Makefile personalizado)
-- **Interface**: Terminal/CLI com formatação ASCII
+- **Compilador**: GCC com flags de segurança (`-Wall`)
+- **Build System**: Make (Makefile avançado)
+- **Interface CLI**: Terminal/ASCII com formatação
+- **Interface Gráfica**: GTK+3 (toolkit nativo Linux)
+- **Arquitetura**: Separação core/view (MVC simplificado)
 - **Estruturas de Dados**: Arrays, structs e typedef
-- **Ambiente de Desenvolvimento**: Linux/WSL
-- **Controle de Versão**: Git
+- **Ambiente**: Linux/WSL (compatível com macOS)-
 
-## � Resolução de Problemas
-
-### ❌ **Erro de Compilação**
-```bash
-# Se o make não funcionar, compile manualmente:
-cd src/app
-gcc -Wall produto.c -o produto
-```
-
-### 📁 **Pasta build não criada**
-```bash
-# Crie manualmente se necessário:
-mkdir build
-```
-
-### 🚫 **Permissão negada**
-```bash
-# Torne o arquivo executável:
-chmod +x build/produto
-```
-
-## �👨‍💻 Autor
+## 👨‍💻 Autor
 
 **Pedro Ruan**  
 Estudante de ITP 2025-2  
@@ -163,4 +215,4 @@ GitHub: [@ruannnrcn](https://github.com/ruannnrcn)
 
 ---
 
-*Sistema desenvolvido como projeto final da disciplina Introdução às Técnicas de Programação, demonstrando competências em programação estruturada, manipulação de dados e desenvolvimento de interfaces.*
+*Sistema desenvolvido como projeto final da disciplina Introdução às Técnicas de Programação, demonstrando competências em programação estruturada, arquitetura modular, interfaces múltiplas e boas práticas de desenvolvimento.*
