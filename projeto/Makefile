@@ -39,21 +39,21 @@ gui: $(BUILD_DIR)/$(TARGET_GUI)
 # Interface Gráfica GTK
 $(BUILD_DIR)/$(TARGET_GUI): $(GUI_SOURCES) $(CORE_SOURCES)
 	$(CC) $(CFLAGS) -I$(SRC_DIR) $(GUI_SOURCES) $(CORE_SOURCES) -o $(BUILD_DIR)/$(TARGET_GUI) $(GTK_CFLAGS) $(GTK_LIBS)
-	@echo "✅ GUI compilada com sucesso!"
+	@echo "GUI compilada com sucesso!"
 
 # CLI usando core  
 $(BUILD_DIR)/$(TARGET_CLI): $(CLI_SOURCES) $(CORE_SOURCES)
 	$(CC) $(CFLAGS) $(CLI_SOURCES) $(CORE_SOURCES) -o $(BUILD_DIR)/$(TARGET_CLI)
-	@echo "✅ CLI (usando core) compilada com sucesso!"
+	@echo "CLI (usando core) compilada com sucesso!"
 
 # Produto original
 $(BUILD_DIR)/$(TARGET_ORIGINAL): $(ORIGINAL_SOURCES)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(TARGET_ORIGINAL) $(ORIGINAL_SOURCES)
-	@echo "✅ Versão original compilada!"
+	@echo "Versão original compilada com sucesso!"
 
 # Executar produto.c 
 run: $(BUILD_DIR)/$(TARGET_ORIGINAL)
-	@echo "🚀 Executando produto.c (original)..."
+	@echo "Executando produto.c (original)..."
 	./$(BUILD_DIR)/$(TARGET_ORIGINAL)
 
 # Executar CLI usando core
@@ -74,43 +74,41 @@ run-original: $(BUILD_DIR)/$(TARGET_ORIGINAL)
 
 # Limpar todos os arquivos compilados
 clean:
-	@echo "🧹 Limpando arquivos compilados..."
+	@echo "Limpando arquivos compilados..."
 	rm -rf $(BUILD_DIR)
-	@echo "✅ Limpeza concluída!"
+	@echo "Limpeza concluída!"
 
 # Limpar apenas GUI
 clean-gui:
 	rm -f $(BUILD_DIR)/$(TARGET_GUI)
-	@echo "🧹 GUI removida!"
+	@echo "GUI removida!"
 
 
 # Rebuild produto.c
 rebuild: clean original
-	@echo "🔄 Produto original reconstruído com sucesso!"
+	@echo "Produto original reconstruído com sucesso!"
 
 # Rebuild CLI
 rebuild-cli: clean cli
-	@echo "🔄 CLI reconstruída com sucesso!"
-
+	@echo "CLI reconstruída com sucesso!"
 # Rebuild GUI
 rebuild-gui: clean gui
-	@echo "🔄 GUI reconstruída com sucesso!"
+	@echo "GUI reconstruída com sucesso!"
 
 # Rebuild tudo
 rebuild-all: clean all
-	@echo "🔄 Todos os executáveis reconstruídos!"
-
+	@echo "Todos os executáveis reconstruídos!"
 
 # Instalar dependências GTK (Ubuntu/Debian)
 install-deps:
-	@echo "📦 Instalando dependências GTK..."
+	@echo "Instalando dependências GTK..."
 	sudo apt update
 	sudo apt install -y libgtk-3-dev pkg-config
 
 # Verificar se GTK está instalado
 check-gtk:
-	@echo "🔍 Verificando GTK..."
-	pkg-config --modversion gtk+-3.0 && echo "✅ GTK instalado!" || echo "❌ GTK não encontrado!"
+	@echo "Verificando GTK..."
+	pkg-config --modversion gtk+-3.0 && echo "GTK instalado!" || echo "GTK não encontrado!"
 
 # Mostrar ajuda
 help:
@@ -123,9 +121,9 @@ help:
 	@echo ""
 	@echo "=== DESENVOLVIMENTO ==="
 	@echo "  make original     - Compila apenas produto.c"
-	@echo "  make cli          - Compila apenas CLI (com core)"
+	@echo "  make cli          - Compila apenas CLI"
 	@echo "  make gui          - Compila apenas GUI"
-	@echo "  make run-cli      - Executa CLI (usando core)"
+	@echo "  make run-cli      - Executa CLI"
 	@echo "  make run-gui      - Executa interface gráfica"
 	@echo "  make rebuild-all  - Reconstrói tudo"
 	@echo ""
