@@ -82,7 +82,7 @@ float validacaoPositivo (float valor) {
     return valor;
 }
 
-//Função para deletar um produto
+// Função para deletar um produto
 int deletarProduto(int id) {
     if (id < 0 || id >= totalProdutos) {
         printf("ID inválido. Nenhum produto deletado.\n");
@@ -110,6 +110,7 @@ int deletarProduto(int id) {
     return 1;
 }
 
+// Função para mostrar os dados de um produto específico
 void mostrarDadosProduto(int id) {
     if (id < 0 || id >= totalProdutos) {
         printf("ID inválido.\n");
@@ -124,6 +125,7 @@ void mostrarDadosProduto(int id) {
     printf("--------------------------------\n");
 }
 
+// Função para editar um produto existente 
 int editarProduto(int id, const char* nome, float preco, float quantidade) {
     // Validação de ID
     if (id < 0 || id >= totalProdutos) {
@@ -169,6 +171,7 @@ int editarProduto(int id, const char* nome, float preco, float quantidade) {
     return 1;
 }
 
+// Função para imprimir o menu principal 
 void imprimirMenu() {
     printf("\n╔══════════════════════════════════════╗\n");
     printf("║            MENU PRINCIPAL            ║\n");
