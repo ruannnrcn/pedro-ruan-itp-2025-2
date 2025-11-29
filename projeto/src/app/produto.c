@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
-#define MAX_PRODUTOS 100
+#include <stdlib.h>
 
 //Estrutura principal do projeto para produto.c, focando em CLI
+//Utilizando alocação dinâmica de memória para gerenciar produtos
 
 
 // Estrutura para representar um produto
@@ -16,10 +16,56 @@ typedef struct {
     float total;
 } Produto;
 
-// Array global para armazenar produtos e contador
-//Colocando inicialmente um valor máximo de 100 produtos
-Produto produtos[MAX_PRODUTOS];
-int totalProdutos = 0;
+// Ponteiro para array dinâmico de produtos e contadores
+Produto *produtos = NULL;  
+int totalProdutos = 0;     
+int capacidade = 0;       
+
+// Função para inicializar o sistema de produtos com alocação dinâmica de memória
+int inicializarSistema() {
+    //Inicializa a capacidade inicial para array de produtos
+    capacidade = 10; 
+    produtos = (Produto*) malloc(capacidade * sizeof(Produto));
+    
+    if (produtos == NULL) {
+        printf("ERRO: Falha ao alocar memória inicial!\n");
+        return 0;
+    }
+    
+    printf("Sistema inicializado com capacidade para %d produtos.\n", capacidade);
+    return 1;
+}
+
+// Função para expandir a capacidade do array dinamicamente
+int expandirCapacidade() {
+
+    //Dobra a capacidade atual para manter sempre espaço suficiente para os produtos
+    int novaCapacidade = capacidade * 2;
+    Produto *temp = (Produto*) realloc(produtos, novaCapacidade * sizeof(Produto));
+    
+    if (temp == NULL) {
+        printf("ERRO: Falha ao expandir memória!\n");
+        return 0;
+    }
+    
+    produtos = temp;
+    capacidade = novaCapacidade;
+    printf("Capacidade expandida para %d produtos.\n", capacidade);
+    return 1;
+}
+
+// Função para liberar toda a memória alocada
+void liberarMemoria() {
+
+    // Reinicializa o ponteiro e contadores após liberar a memória, utilizado no final do programa
+    if (produtos != NULL) {
+        free(produtos);
+        produtos = NULL;
+        totalProdutos = 0;
+        capacidade = 0;
+        printf("Memória liberada com sucesso.\n");
+    }
+}
 
 // Função para calcular o preço total do produto
 float calcularTotal(float preco, float quantidade) {
@@ -28,21 +74,27 @@ float calcularTotal(float preco, float quantidade) {
 
 // Função para adicionar um produto ao array
 void adicionarProduto(Produto produto) {
-    if (totalProdutos < MAX_PRODUTOS) {
-        // Copia o produto recebido para o array
-        produtos[totalProdutos] = produto;
-        
-        // Define o ID e calcula o total
-        produtos[totalProdutos].id = totalProdutos;
-        produtos[totalProdutos].total = calcularTotal(produto.preco, produto.quantidade);
-        
-        printf("Produto %s adicionado com sucesso!\n", produto.nome);
-        printf("Preço total: R$ %.2f / Quantidade: %.2f\n", 
-               produtos[totalProdutos].total, produto.quantidade);
-        totalProdutos++;
-    } else {
-        printf("Limite máximo de produtos atingido!\n");
+    // Verifica se precisa expandir a capacidade
+    if (totalProdutos >= capacidade) {
+        if (!expandirCapacidade()) {
+            printf("Não foi possível adicionar o produto por falta de memória.\n");
+            return;
+        }
     }
+    
+    // Copia o produto recebido para o array
+    produtos[totalProdutos] = produto;
+    
+    // Define o ID e calcula o total
+    produtos[totalProdutos].id = totalProdutos;
+    produtos[totalProdutos].total = calcularTotal(produto.preco, produto.quantidade);
+    
+    printf("Produto %s adicionado com sucesso!\n", produto.nome);
+    printf("Preço total: R$ %.2f / Quantidade: %.2f\n", 
+           produtos[totalProdutos].total, produto.quantidade);
+    printf("Produtos cadastrados: %d / Capacidade: %d\n", 
+           totalProdutos + 1, capacidade);
+    totalProdutos++;
 }
 
 // Função para listar todos os produtos
@@ -196,7 +248,14 @@ int main () {
     // Variável para o nome do produto com ate 50 caracteres
     char nome[51];
 
-    printf("=== SISTEMA DE GERENCIAMENTO DE PRODUTOS ===\n\n");
+    printf("=== SISTEMA DE GERENCIAMENTO DE PRODUTOS ===\n");
+    printf("Com alocação dinâmica de memória\n\n");
+    
+    // Inicializa o sistema com alocação dinâmica
+    if (!inicializarSistema()) {
+        printf("Falha ao inicializar o sistema. Encerrando...\n");
+        return 1;
+    }
 
     // Loop para adicionar um produto e mostrar seu preço total
     while (1) {
@@ -287,6 +346,9 @@ int main () {
             break;
         }
     }
+
+    // Libera toda a memória alocada antes de encerrar
+    liberarMemoria();
 
     return 0;
 }

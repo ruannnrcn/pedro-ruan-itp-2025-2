@@ -2,11 +2,6 @@
 
 Este repositório contém materiais, exercícios e projetos desenvolvidos durante o curso de Introdução às Técnicas de Programação (ITP) 2025-2.
 
-## 🎥 Vídeo de Apresentação
-
-**Duração:** 5-8 minutos  
-**Link:** [https://youtu.be/ISW3GK7lOW8](https://youtu.be/ISW3GK7lOW8)
-
 📂 Estrutura do Repositório
 
 ```
@@ -39,8 +34,6 @@ pedro-ruan-itp-2025-2/
 │   └── c_cpp_properties.json   # IntelliSense para C/GTK
 └── README.md                # 📖 Este arquivo de documentação geral
 ```
-
-### Descrição Detalhada das Pastas
 
 
 #### 🎯 **Projeto Principal - Sistema de Gerenciamento de Produtos**
@@ -153,21 +146,6 @@ make run-gui          # Interface gráfica GTK (requer dependências)
 make clean           # Limpa arquivos compilados
 make rebuild         # Recompila completamente
 make install-deps    # Instala dependências GTK (Ubuntu/Debian)
-```
-
-### 🎮 **Navegando pelas Listas de Exercícios**
-```bash
-# Explorar exercícios por semana
-cd listas/semana2_variáveis_tipos_operadores/
-ls -la                # Ver problemas disponíveis
-
-# Compilar e executar exercício específico
-cd problema1/
-gcc -o calculadora calculadoraImc.c
-./calculadora
-
-# Retornar ao diretório principal
-cd ../../..
 ```
 
 ### 🎮 **Interface do Sistema de Produtos**
